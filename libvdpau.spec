@@ -1,7 +1,7 @@
 
 %define name	libvdpau
 %define version	0.1
-%define snap	20090221
+%define snap	20090718
 %define rel	1
 
 %define major	1
@@ -17,8 +17,8 @@ License:	MIT
 Group:		System/Libraries
 URL:		http://www.nvnews.net/vbulletin/showthread.php?t=123091
 # rm -rf libvdpau && git clone git://anongit.freedesktop.org/~aplattner/libvdpau && cd libvdpau/
-# git archive --prefix=libvdpau-$(date +%Y%m%d)/ --format=tar HEAD | lzma > ../libvdpau-$(date +%Y%m%d).tar.lzma
-Source0:	libvdpau-%{snap}.tar.lzma
+# git archive --prefix=libvdpau-$(date +%Y%m%d)/ --format=tar HEAD | xz > ../libvdpau-$(date +%Y%m%d).tar.xz
+Source0:	libvdpau-%{snap}.tar.xz
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	libx11-devel
 
