@@ -1,7 +1,7 @@
 
 %define name	libvdpau
-%define version	0.1
-%define snap	20090718
+%define version	0.2
+%define snap	0
 %define rel	1
 
 %define major	1
@@ -12,13 +12,21 @@
 Summary:	Video Decode and Presentation API for Unix
 Name:		%{name}
 Version:	%{version}
+%if %snap
 Release:	%mkrel 0.%snap.%rel
+%else
+Release:	%mkrel %rel
+%endif
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.nvnews.net/vbulletin/showthread.php?t=123091
+%if %snap
 # rm -rf libvdpau && git clone git://anongit.freedesktop.org/~aplattner/libvdpau && cd libvdpau/
 # git archive --prefix=libvdpau-$(date +%Y%m%d)/ --format=tar HEAD | xz > ../libvdpau-$(date +%Y%m%d).tar.xz
 Source0:	libvdpau-%{snap}.tar.xz
+%else
+Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
+%endif
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	libx11-devel
 
@@ -59,11 +67,16 @@ This package contains the VDPAU headers for developing software that
 uses VDPAU.
 
 %prep
+%if %snap
 %setup -q -n %name-%snap
+%else
+%setup -q
+%endif
 
 %build
+%if %snap
 autoreconf -if
-export LIBS=-ldl
+%endif
 %configure2_5x
 %make
 
