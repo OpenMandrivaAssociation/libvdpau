@@ -1,6 +1,6 @@
 
 %define name	libvdpau
-%define version	0.2
+%define version	0.3
 %define snap	0
 %define rel	1
 
@@ -29,6 +29,8 @@ Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.
 %endif
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	libx11-devel
+# for apidoc:
+BuildRequires:	tetex graphviz doxygen
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -83,7 +85,9 @@ autoreconf -if
 %install
 rm -rf %{buildroot}
 %makeinstall_std
-rm -f %{buildroot}%{_libdir}/*.la
+# (anssi) unneeded files
+rm -f %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/vdpau/*.{la,so}
+mv %{buildroot}%{_docdir}/libvdpau/html api-html
 
 %clean
 rm -rf %{buildroot}
@@ -91,13 +95,16 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/libvdpau.so.%{major}*
+%dir %{_libdir}/vdpau
 
 %files -n %tracename
 %defattr(-,root,root)
-%{_libdir}/libvdpau_trace.so
+# major is the plugin interface version, not %major
+%{_libdir}/vdpau/libvdpau_trace.so.*
 
 %files -n %{devname}
 %defattr(-,root,root)
+%doc AUTHORS ChangeLog api-html
 %{_includedir}/vdpau
 %{_libdir}/libvdpau.so
 %{_libdir}/pkgconfig/vdpau.pc
