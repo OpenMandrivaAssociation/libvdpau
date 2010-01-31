@@ -29,6 +29,7 @@ Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.
 %endif
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	libx11-devel
+BuildRequires:	libxext-devel
 # for apidoc:
 BuildRequires:	tetex graphviz doxygen
 
