@@ -1,6 +1,6 @@
 
 %define name	libvdpau
-%define version	0.4
+%define version	0.4.1
 %define snap	0
 %define rel	1
 
