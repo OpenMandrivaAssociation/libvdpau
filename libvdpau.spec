@@ -28,6 +28,7 @@ Source0:	libvdpau-%{snap}.tar.xz
 Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
 %endif
 BuildRoot:	%{_tmppath}/%{name}-root
+Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
 # for apidoc:
@@ -75,6 +76,8 @@ uses VDPAU.
 %else
 %setup -q
 %endif
+
+%patch0 -p1
 
 %build
 %if %snap
