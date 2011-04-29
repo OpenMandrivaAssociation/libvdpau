@@ -2,7 +2,7 @@
 %define name	libvdpau
 %define version	0.4.1
 %define snap	0
-%define rel	1
+%define rel	2
 
 %define major	1
 %define libname	%mklibname vdpau %major
