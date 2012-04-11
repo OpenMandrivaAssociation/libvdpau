@@ -1,8 +1,10 @@
 
+%define build_doc 0
+
 %define name	libvdpau
 %define version	0.4.1
 %define snap	0
-%define rel	2
+%define rel	3
 
 %define major	1
 %define libname	%mklibname vdpau %major
@@ -27,12 +29,17 @@ Source0:	libvdpau-%{snap}.tar.xz
 %else
 Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
 %endif
-BuildRoot:	%{_tmppath}/%{name}-root
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
+# (tpg)
+# this patches fixes leaking overlays and "ble skin peple"
+# http://www.nvnews.net/vbulletin/showpost.php?p=2518770&postcount=104
+Patch1:		0001-vdpau_trace-WAR-Flash-quirks.patch
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
+%if %build_doc
 # for apidoc:
 BuildRequires:	tetex graphviz doxygen
+%endif
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -78,37 +85,42 @@ uses VDPAU.
 %endif
 
 %patch0 -p1
+%patch1 -p1
 
 %build
 %if %snap
 autoreconf -if
 %endif
-%configure2_5x
+%configure2_5x \
+	 %if ! %build_doc
+	--disable-documentation
+	%endif
+
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
+
 # (anssi) unneeded files
 rm -f %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/vdpau/*.{la,so}
-mv %{buildroot}%{_docdir}/libvdpau/html api-html
 
-%clean
-rm -rf %{buildroot}
+%if %build_doc
+mv %{buildroot}%{_docdir}/libvdpau/html api-html
+%endif
 
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/libvdpau.so.%{major}*
 %dir %{_libdir}/vdpau
 
 %files -n %tracename
-%defattr(-,root,root)
 # major is the plugin interface version, not %major
 %{_libdir}/vdpau/libvdpau_trace.so.*
 
 %files -n %{devname}
-%defattr(-,root,root)
-%doc AUTHORS ChangeLog api-html
+%doc AUTHORS ChangeLog
+%if %build_doc
+%doc api-html
+%endif
 %{_includedir}/vdpau
 %{_libdir}/libvdpau.so
 %{_libdir}/pkgconfig/vdpau.pc
