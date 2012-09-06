@@ -2,7 +2,7 @@
 %define build_doc 0
 
 %define name	libvdpau
-%define version	0.4.1
+%define version	0.5
 %define snap	0
 %define rel	3
 
@@ -109,6 +109,7 @@ mv %{buildroot}%{_docdir}/libvdpau/html api-html
 %endif
 
 %files -n %{libname}
+%{_sysconfdir}/vdpau_wrapper.cfg
 %{_libdir}/libvdpau.so.%{major}*
 %dir %{_libdir}/vdpau
 
