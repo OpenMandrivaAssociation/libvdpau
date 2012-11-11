@@ -1,0 +1,26 @@
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 7cb1c20..4d8f7c3 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -19,7 +19,7 @@ endif
+ 
+ libvdpau_la_LIBADD = \
+     $(DLOPEN_LIBS) \
+-    $(XEXT_LIBS)
++    $(XEXT_LIBS) -lX11
+ 
+ libvdpau_la_LDFLAGS = -version-info 1:0:0 -no-undefined
+ 
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 3dd5590..965c41f 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -184,7 +184,7 @@ STRIP = @STRIP@
+ VERSION = @VERSION@
+ X11_CFLAGS = @X11_CFLAGS@
+ X11_LIBS = @X11_LIBS@
+-XEXT_CFLAGS = @XEXT_CFLAGS@
++XEXT_CFLAGS = @XEXT_CFLAGS@ -lX11
+ XEXT_LIBS = @XEXT_LIBS@
+ abs_builddir = @abs_builddir@
+ abs_srcdir = @abs_srcdir@
