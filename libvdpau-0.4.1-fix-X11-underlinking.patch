@@ -1,8 +1,7 @@
-diff --git a/src/Makefile.am b/src/Makefile.am
-index 7cb1c20..4d8f7c3 100644
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -19,7 +19,7 @@ endif
+diff -Naur libvdpau-0.4.1//src/Makefile.am libvdpau-0.4.1.tpg//src/Makefile.am
+--- libvdpau-0.4.1//src/Makefile.am	2010-09-07 17:21:32.000000000 +0000
++++ libvdpau-0.4.1.tpg//src/Makefile.am	2010-09-12 16:01:01.000000000 +0000
+@@ -18,7 +18,7 @@
  
  libvdpau_la_LIBADD = \
      $(DLOPEN_LIBS) \
@@ -11,16 +10,15 @@ index 7cb1c20..4d8f7c3 100644
  
  libvdpau_la_LDFLAGS = -version-info 1:0:0 -no-undefined
  
-diff --git a/src/Makefile.in b/src/Makefile.in
-index 3dd5590..965c41f 100644
---- a/src/Makefile.in
-+++ b/src/Makefile.in
-@@ -184,7 +184,7 @@ STRIP = @STRIP@
- VERSION = @VERSION@
- X11_CFLAGS = @X11_CFLAGS@
- X11_LIBS = @X11_LIBS@
--XEXT_CFLAGS = @XEXT_CFLAGS@
-+XEXT_CFLAGS = @XEXT_CFLAGS@ -lX11
- XEXT_LIBS = @XEXT_LIBS@
- abs_builddir = @abs_builddir@
- abs_srcdir = @abs_srcdir@
+diff -Naur libvdpau-0.4.1//src/Makefile.in libvdpau-0.4.1.tpg//src/Makefile.in
+--- libvdpau-0.4.1//src/Makefile.in	2010-09-08 17:07:03.000000000 +0000
++++ libvdpau-0.4.1.tpg//src/Makefile.in	2010-09-12 16:01:28.000000000 +0000
+@@ -234,7 +234,7 @@
+     -I$(top_srcdir)/include \
+     -DVDPAU_MODULEDIR="\"$(moduledir)\"" \
+     $(X11_CFLAGS) \
+-    $(XEXT_CFLAGS)
++    $(XEXT_CFLAGS) -lX11
+ 
+ lib_LTLIBRARIES = libvdpau.la
+ libvdpau_la_SOURCES = \

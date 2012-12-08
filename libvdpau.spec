@@ -1,10 +1,8 @@
 
-%define build_doc 0
-
 %define name	libvdpau
-%define version	0.5
+%define version	0.4.1
 %define snap	0
-%define rel	3
+%define rel	4
 
 %define major	1
 %define libname	%mklibname vdpau %major
@@ -29,17 +27,12 @@ Source0:	libvdpau-%{snap}.tar.xz
 %else
 Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
 %endif
+BuildRoot:	%{_tmppath}/%{name}-root
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
-# (tpg)
-# this patches fixes leaking overlays and "ble skin peple"
-# http://www.nvnews.net/vbulletin/showpost.php?p=2518770&postcount=104
-Patch1:		0001-vdpau_trace-WAR-Flash-quirks.patch
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
-%if %build_doc
 # for apidoc:
 BuildRequires:	tetex graphviz doxygen
-%endif
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -85,44 +78,78 @@ uses VDPAU.
 %endif
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 %if %snap
 autoreconf -if
 %endif
-%configure2_5x \
-	 %if ! %build_doc
-	--disable-documentation
-	%endif
-
+%configure2_5x
 %make
 
 %install
+rm -rf %{buildroot}
 %makeinstall_std
-
 # (anssi) unneeded files
 rm -f %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/vdpau/*.{la,so}
-
-%if %build_doc
 mv %{buildroot}%{_docdir}/libvdpau/html api-html
-%endif
+
+%clean
+rm -rf %{buildroot}
 
 %files -n %{libname}
-%{_sysconfdir}/vdpau_wrapper.cfg
+%defattr(-,root,root)
 %{_libdir}/libvdpau.so.%{major}*
 %dir %{_libdir}/vdpau
 
 %files -n %tracename
+%defattr(-,root,root)
 # major is the plugin interface version, not %major
 %{_libdir}/vdpau/libvdpau_trace.so.*
 
 %files -n %{devname}
-%doc AUTHORS ChangeLog
-%if %build_doc
-%doc api-html
-%endif
+%defattr(-,root,root)
+%doc AUTHORS ChangeLog api-html
 %{_includedir}/vdpau
 %{_libdir}/libvdpau.so
 %{_libdir}/pkgconfig/vdpau.pc
+
+
+
+%changelog
+* Fri Apr 29 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.1-2mdv2011.0
++ Revision: 660292
+- mass rebuild
+
+* Sun Sep 12 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 0.4.1-1mdv2011.0
++ Revision: 577793
+- Patch0: fix underlinking
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - new release (strange that I could beat Anssi on that one...)
+
+* Sun Jan 31 2010 Anssi Hannula <anssi@mandriva.org> 0.4-1mdv2010.1
++ Revision: 498888
+- new version
+
+* Wed Nov 25 2009 Anssi Hannula <anssi@mandriva.org> 0.3-1mdv2010.1
++ Revision: 470080
+- new version
+
+* Sat Sep 19 2009 Anssi Hannula <anssi@mandriva.org> 0.2-1mdv2010.0
++ Revision: 444666
+- 0.2 (first official non-snapshot version)
+- remove underlinking workaround, fixed upstream
+
+* Sat Jul 18 2009 Anssi Hannula <anssi@mandriva.org> 0.1-0.20090718.1mdv2010.0
++ Revision: 397127
+- new snapshot
+
+* Sat Feb 21 2009 Anssi Hannula <anssi@mandriva.org> 0.1-0.20090221.1mdv2009.1
++ Revision: 343640
+- switch to freedesktop snapshot of libvdpau
+- rename vdpau to libvdpau
+
+* Sun Dec 21 2008 Anssi Hannula <anssi@mandriva.org> 0-0.180.16.1mdv2009.1
++ Revision: 317093
+- initial Mandriva release
 
