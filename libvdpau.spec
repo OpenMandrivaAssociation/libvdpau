@@ -1,8 +1,5 @@
-
-%define name	libvdpau
-%define version	0.4.1
 %define snap	0
-%define rel	4
+%define rel	1
 
 %define major	1
 %define libname	%mklibname vdpau %major
@@ -10,12 +7,12 @@
 %define tracename %mklibname vdpau-trace
 
 Summary:	Video Decode and Presentation API for Unix
-Name:		%{name}
-Version:	%{version}
+Name:		libvdpau
+Version:	0.5
 %if %snap
-Release:	%mkrel 0.%snap.%rel
+Release:	0.%snap.%rel
 %else
-Release:	%mkrel %rel
+Release:	%rel
 %endif
 License:	MIT
 Group:		System/Libraries
@@ -27,7 +24,6 @@ Source0:	libvdpau-%{snap}.tar.xz
 %else
 Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
 %endif
-BuildRoot:	%{_tmppath}/%{name}-root
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
@@ -98,6 +94,7 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
+%config(noreplace) %_sysconfdir/vdpau_wrapper.cfg
 %{_libdir}/libvdpau.so.%{major}*
 %dir %{_libdir}/vdpau
 
