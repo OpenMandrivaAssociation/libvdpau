@@ -1,14 +1,14 @@
-%define snap	0
+%define snap 0
 %define rel	1
 
-%define major	1
-%define libname	%mklibname vdpau %major
-%define devname	%mklibname vdpau -d
+%define major 1
+%define libname %mklibname vdpau %major
+%define devname %mklibname vdpau -d
 %define tracename %mklibname vdpau-trace
 
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	0.5
+Version:	0.6
 %if %snap
 Release:	0.%snap.%rel
 %else
@@ -16,7 +16,7 @@ Release:	%rel
 %endif
 License:	MIT
 Group:		System/Libraries
-URL:		http://www.nvnews.net/vbulletin/showthread.php?t=123091
+URL:		http://cgit.freedesktop.org/~aplattner/libvdpau
 %if %snap
 # rm -rf libvdpau && git clone git://anongit.freedesktop.org/~aplattner/libvdpau && cd libvdpau/
 # git archive --prefix=libvdpau-$(date +%Y%m%d)/ --format=tar HEAD | xz > ../libvdpau-$(date +%Y%m%d).tar.xz
@@ -28,7 +28,9 @@ Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
 # for apidoc:
-BuildRequires:	tetex graphviz doxygen
+BuildRequires:	tetex
+BuildRequires:	graphviz
+BuildRequires:	doxygen
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -39,16 +41,16 @@ implement OSDs and other application user interfaces.
 
 Only the proprietary NVIDIA driver supports this interface so far.
 
-%package -n %libname
+%package -n %{libname}
 Summary:	VDPAU shared library
 Group:		System/Libraries
 
-%description -n %libname
+%description -n %{libname}
 The Video Decode and Presentation API for Unix (VDPAU) wrapper shared
 library. This library is responsible for loading the hardware-specific
 VDPAU driver.
 
-%package -n %tracename
+%package -n %{tracename}
 Summary:	VDPAU tracing module for debugging
 Group:		Development/X11
 Requires:	%{libname} = %{version}-%{release}
@@ -56,13 +58,13 @@ Requires:	%{libname} = %{version}-%{release}
 %description -n %tracename
 VDPAU tracing module libvdpau_trace.so for debugging VDPAU.
 
-%package -n %devname
+%package -n %{devname}
 Summary:	VDPAU development headers
 Group:		Development/X11
 Requires:	%{libname} = %{version}-%{release}
 Provides:	vdpau-devel = %{version}-%{release}
 
-%description -n %devname
+%description -n %{devname}
 This package contains the VDPAU headers for developing software that
 uses VDPAU.
 
@@ -83,28 +85,21 @@ autoreconf -if
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 # (anssi) unneeded files
 rm -f %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/vdpau/*.{la,so}
 mv %{buildroot}%{_docdir}/libvdpau/html api-html
 
-%clean
-rm -rf %{buildroot}
-
 %files -n %{libname}
-%defattr(-,root,root)
 %config(noreplace) %_sysconfdir/vdpau_wrapper.cfg
 %{_libdir}/libvdpau.so.%{major}*
 %dir %{_libdir}/vdpau
 
-%files -n %tracename
-%defattr(-,root,root)
+%files -n %{tracename}
 # major is the plugin interface version, not %major
 %{_libdir}/vdpau/libvdpau_trace.so.*
 
 %files -n %{devname}
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog api-html
 %{_includedir}/vdpau
 %{_libdir}/libvdpau.so
