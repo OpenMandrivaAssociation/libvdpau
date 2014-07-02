@@ -11,12 +11,12 @@
 
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	0.7
-Release:	6
+Version:	0.8
+Release:	1
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
-Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
+Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 %if %{without bootstrap}
 # for apidoc:
@@ -69,7 +69,7 @@ uses VDPAU.
 %apply_patches
 
 %build
-%configure2_5x --disable-static
+%configure --disable-static
 %make
 
 %install
