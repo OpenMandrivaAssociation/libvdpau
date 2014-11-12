@@ -3,19 +3,27 @@
 %define devname %mklibname vdpau -d
 %define libtrace %mklibname vdpau_trace %{major}
 
+%ifarch aarch64
+%bcond_without bootstrap
+%else
+%bcond_with bootstrap
+%endif
+
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	0.6
-Release:	3
+Version:	0.8
+Release:	1
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
-Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.gz
+Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
+%if %{without bootstrap}
 # for apidoc:
 BuildRequires:	doxygen
 BuildRequires:	graphviz
-BuildRequires:	tetex
+BuildRequires:	texlive
+%endif
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 
@@ -61,13 +69,15 @@ uses VDPAU.
 %apply_patches
 
 %build
-%configure2_5x --disable-static
+%configure --disable-static
 %make
 
 %install
 %makeinstall_std
+%if ! %{with bootstrap}
 # (anssi) unneeded files
 mv %{buildroot}%{_docdir}/libvdpau/html api-html
+%endif
 
 %files -n %{libname}
 %config(noreplace) %{_sysconfdir}/vdpau_wrapper.cfg
@@ -78,7 +88,10 @@ mv %{buildroot}%{_docdir}/libvdpau/html api-html
 %{_libdir}/vdpau/libvdpau_trace.so.%{major}*
 
 %files -n %{devname}
-%doc AUTHORS ChangeLog api-html
+%doc AUTHORS ChangeLog
+%if ! %{with bootstrap}
+%doc api-html
+%endif
 %{_includedir}/vdpau
 %{_libdir}/libvdpau.so
 %{_libdir}/vdpau/libvdpau_trace.so

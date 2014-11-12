@@ -1,5 +1,3 @@
-removed_sources:
-  libvdpau-0.5.tar.gz: 1b18b8f75eea52740af84881313d860ad5c27d0b
 
 sources:
-  libvdpau-0.6.tar.gz: 255c9bddbfa5575ab08e91dd1e315a693256a7dc
+  libvdpau-0.8.tar.bz2: 5618c2708cfa4c55e1c7acf74e5220a0acda4ea4
