@@ -17,7 +17,7 @@ License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
 Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
-Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
+#Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 %if %{without bootstrap}
 # for apidoc:
 BuildRequires:	doxygen
