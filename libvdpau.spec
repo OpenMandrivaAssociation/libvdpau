@@ -11,7 +11,7 @@
 
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	0.9
+Version:	1.0
 Release:	1
 License:	MIT
 Group:		System/Libraries
