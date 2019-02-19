@@ -12,7 +12,7 @@
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
 Version:	1.1.1
-Release:	7
+Release:	8
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
@@ -33,8 +33,6 @@ complete solution for decoding, post-processing, compositing, and
 displaying compressed or uncompressed video streams. These video
 streams may be combined (composited) with bitmap content, to
 implement OSDs and other application user interfaces.
-
-Only the proprietary NVIDIA driver supports this interface so far.
 
 %package -n %{libname}
 Summary:	VDPAU shared library
