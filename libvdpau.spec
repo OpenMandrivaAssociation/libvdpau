@@ -3,7 +3,7 @@
 %define devname %mklibname vdpau -d
 %define libtrace %mklibname vdpau_trace %{major}
 
-%ifarch aarch64
+%ifarch %armx %riscv
 %bcond_without bootstrap
 %else
 %bcond_with bootstrap
