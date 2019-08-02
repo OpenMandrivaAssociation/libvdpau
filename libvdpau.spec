@@ -2,6 +2,7 @@
 %define libname %mklibname vdpau %{major}
 %define devname %mklibname vdpau -d
 %define libtrace %mklibname vdpau_trace %{major}
+%global optflags %{optflags} -O3
 
 %ifarch %armx %riscv
 %bcond_without bootstrap
@@ -12,7 +13,7 @@
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
 Version:	1.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
@@ -63,15 +64,14 @@ This package contains the VDPAU headers for developing software that
 uses VDPAU.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 
 %build
 %configure --disable-static
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 %if ! %{with bootstrap}
 # (anssi) unneeded files
 mv %{buildroot}%{_docdir}/libvdpau/html api-html
