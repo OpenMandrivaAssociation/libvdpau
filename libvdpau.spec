@@ -12,12 +12,13 @@
 
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	1.2
-Release:	2
+Version:	1.3
+Release:	1
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
-Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
+#Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
+Source0:  https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/%{version}/libvdpau-%{version}.tar.bz2
 Patch0:		libvdpau-0.4.1-fix-X11-underlinking.patch
 %if %{without bootstrap}
 # for apidoc:
@@ -27,6 +28,7 @@ BuildRequires:	texlive
 %endif
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
+BuildRequires:  meson
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -67,11 +69,12 @@ uses VDPAU.
 %autosetup -p1
 
 %build
-%configure --disable-static
-%make_build
+%meson
+%meson_build
 
 %install
-%make_install
+%meson_install
+
 %if ! %{with bootstrap}
 # (anssi) unneeded files
 mv %{buildroot}%{_docdir}/libvdpau/html api-html
@@ -86,7 +89,7 @@ mv %{buildroot}%{_docdir}/libvdpau/html api-html
 %{_libdir}/vdpau/libvdpau_trace.so.%{major}*
 
 %files -n %{devname}
-%doc AUTHORS ChangeLog
+%doc AUTHORS
 %if ! %{with bootstrap}
 %doc api-html
 %endif
