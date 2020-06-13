@@ -1,7 +1,15 @@
+# vdpau is used by mesa, mesa is used by wine and steam
+%ifarch %{x86_64}
+%bcond_without compat32
+%endif
+
 %define major 1
 %define libname %mklibname vdpau %{major}
 %define devname %mklibname vdpau -d
 %define libtrace %mklibname vdpau_trace %{major}
+%define lib32name %mklib32name vdpau %{major}
+%define dev32name %mklib32name vdpau -d
+%define lib32trace %mklib32name vdpau_trace %{major}
 %global optflags %{optflags} -O3
 
 %ifarch %armx %riscv
@@ -13,7 +21,7 @@
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
 Version:	1.4
-Release:	1
+Release:	2
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
@@ -29,6 +37,13 @@ BuildRequires:	texlive
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:  meson
+%if %{with compat32}
+BuildRequires:	devel(libX11)
+BuildRequires:	devel(libXext)
+BuildRequires:	devel(libxcb)
+BuildRequires:	devel(libXau)
+BuildRequires:	devel(libXdmcp)
+%endif
 
 %description
 The Video Decode and Presentation API for Unix (VDPAU) provides a
@@ -65,14 +80,52 @@ Provides:	vdpau-devel = %{version}-%{release}
 This package contains the VDPAU headers for developing software that
 uses VDPAU.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	VDPAU shared library (32-bit)
+Group:		System/Libraries
+
+%description -n %{lib32name}
+The Video Decode and Presentation API for Unix (VDPAU) wrapper shared
+library. This library is responsible for loading the hardware-specific
+VDPAU driver.
+
+%package -n %{lib32trace}
+Summary:	VDPAU tracing module for debugging (32-bit)
+Group:		Development/X11
+
+%description -n %{lib32trace}
+VDPAU tracing module libvdpau_trace.so for debugging VDPAU.
+
+%package -n %{dev32name}
+Summary:	VDPAU development headers (32-bit)
+Group:		Development/X11
+Requires:	%{devname} = %{version}-%{release}
+Requires:	%{lib32name} = %{version}-%{release}
+Requires:	%{lib32trace} = %{version}-%{release}
+
+%description -n %{dev32name}
+This package contains the VDPAU headers for developing software that
+uses VDPAU.
+%endif
+
 %prep
 %autosetup -p1
+%if %{with compat32}
+%meson32
+%endif
+%meson
 
 %build
-%meson
+%if %{with compat32}
+%ninja_build -C build32
+%endif
 %meson_build
 
 %install
+%if %{with compat32}
+%ninja_install -C build32
+%endif
 %meson_install
 
 %if ! %{with bootstrap}
@@ -97,3 +150,17 @@ mv %{buildroot}%{_docdir}/libvdpau/html api-html
 %{_libdir}/libvdpau.so
 %{_libdir}/vdpau/libvdpau_trace.so
 %{_libdir}/pkgconfig/vdpau.pc
+
+%if %{with compat32}
+%files -n %{lib32name}
+%{_prefix}/lib/libvdpau.so.%{major}*
+
+%files -n %{lib32trace}
+%dir %{_prefix}/lib/vdpau
+%{_prefix}/lib/vdpau/libvdpau_trace.so.%{major}*
+
+%files -n %{dev32name}
+%{_prefix}/lib/libvdpau.so
+%{_prefix}/lib/vdpau/libvdpau_trace.so
+%{_prefix}/lib/pkgconfig/vdpau.pc
+%endif
