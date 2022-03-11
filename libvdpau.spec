@@ -20,13 +20,12 @@
 
 Summary:	Video Decode and Presentation API for Unix
 Name:		libvdpau
-Version:	1.4
-Release:	3
+Version:	1.5
+Release:	1
 License:	MIT
 Group:		System/Libraries
 Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
-#Source0:	http://people.freedesktop.org/~aplattner/vdpau/libvdpau-%{version}.tar.bz2
-Source0:  https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/%{version}/libvdpau-%{version}.tar.bz2
+Source0:	https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/%{version}/libvdpau-%{version}.tar.bz2
 
 %if %{without bootstrap}
 # for apidoc:
@@ -36,7 +35,7 @@ BuildRequires:	texlive
 %endif
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
-BuildRequires:  meson
+BuildRequires:	meson
 %if %{with compat32}
 BuildRequires:	devel(libX11)
 BuildRequires:	devel(libXext)
