@@ -149,6 +149,7 @@ mv %{buildroot}%{_docdir}/libvdpau/html api-html
 %{_libdir}/libvdpau.so
 %{_libdir}/vdpau/libvdpau_trace.so
 %{_libdir}/pkgconfig/vdpau.pc
+%optional %{_docdir}/libvdpau
 
 %if %{with compat32}
 %files -n %{lib32name}
