@@ -24,7 +24,7 @@ Version:	1.5
 Release:	5
 License:	MIT
 Group:		System/Libraries
-Url:		http://cgit.freedesktop.org/~aplattner/libvdpau
+Url:		https://cgit.freedesktop.org/~aplattner/libvdpau
 Source0:	https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/%{version}/libvdpau-%{version}.tar.bz2
 
 %if %{without bootstrap}
